@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pencatatan Rakitan Buku</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f4f4f4;
+    }
+    h1 {
+      text-align: center;
+    }
+    form {
+      margin-bottom: 20px;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      box-sizing: border-box;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: center;
+    }
+    th {
+      background-color: #e2e2e2;
+    }
+    .btn-hapus {
+      background-color: red;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Pencatatan Rakitan Buku</h1>
+  <form id="rakitanForm">
+    <label>Nama Pekerja:
+      <input type="text" id="nama" required />
+    </label>
+    <label>Tanggal:
+      <input type="date" id="tanggal" required />
+    </label>
+    <label>Jam Setor:
+      <input type="time" id="jam" required />
+    </label>
+    <label>Jumlah Rakitan:
+      <input type="number" id="jumlah" required />
+    </label>
+    <button type="submit">Simpan</button>
+  </form>
+
+  <table>
+    <thead>
+      <tr>
+        <th>No</th>
+        <th>Nama</th>
+        <th>Tanggal</th>
+        <th>Jam</th>
+        <th>Jumlah Rakitan</th>
+        <th>Total Upah (Rp)</th>
+        <th>Aksi</th>
+      </tr>
+    </thead>
+    <tbody id="tabelData"></tbody>
+  </table>
+
+  <script>
+    let data = JSON.parse(localStorage.getItem("rakitanData")) || [];
+    const form = document.getElementById("rakitanForm");
+    const tabelData = document.getElementById("tabelData");
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const nama = document.getElementById("nama").value;
+      const tanggal = document.getElementById("tanggal").value;
+      const jam = document.getElementById("jam").value;
+      const jumlah = parseInt(document.getElementById("jumlah").value);
+      const upah = jumlah * 20;
+
+      data.push({ nama, tanggal, jam, jumlah, upah });
+      localStorage.setItem("rakitanData", JSON.stringify(data));
+      tampilkanData();
+      form.reset();
+    });
+
+    function tampilkanData() {
+      tabelData.innerHTML = "";
+      data.forEach((item, index) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${index + 1}</td>
+          <td>${item.nama}</td>
+          <td>${item.tanggal}</td>
+          <td>${item.jam}</td>
+          <td>${item.jumlah}</td>
+          <td>Rp ${item.upah.toLocaleString()}</td>
+          <td><button class="btn-hapus" onclick="hapusData(${index})">Hapus</button></td>
+        `;
+        tabelData.appendChild(row);
+      });
+    }
+
+    function hapusData(index) {
+      if (confirm("Yakin ingin menghapus data ini?")) {
+        data.splice(index, 1);
+        localStorage.setItem("rakitanData", JSON.stringify(data));
+        tampilkanData();
+      }
+    }
+
+    // Tampilkan data saat pertama kali halaman dibuka
+    tampilkanData();
+  </script>
+</body>
+</html>
