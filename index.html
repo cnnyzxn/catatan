@@ -110,7 +110,6 @@
           <th>Tanggal</th>
           <th>Jam</th>
           <th>Jumlah Rakitan</th>
-          <th>Total Upah (Rp)</th>
           <th>Aksi</th>
         </tr>
       </thead>
@@ -130,9 +129,8 @@
       const tanggal = document.getElementById("tanggal").value;
       const jam = document.getElementById("jam").value;
       const jumlah = parseInt(document.getElementById("jumlah").value);
-      const upah = jumlah * 20;
 
-      data.push({ nama, tanggal, jam, jumlah, upah });
+      data.push({ nama, tanggal, jam, jumlah });
       localStorage.setItem("rakitanData", JSON.stringify(data));
       tampilkanData();
       form.reset();
@@ -148,7 +146,6 @@
           <td>${item.tanggal}</td>
           <td>${item.jam}</td>
           <td>${item.jumlah}</td>
-          <td>Rp ${item.upah.toLocaleString()}</td>
           <td><button class="btn-hapus" onclick="hapusData(${index})">Hapus</button></td>
         `;
         tabelData.appendChild(row);
