@@ -4,162 +4,189 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pencatatan Rakitan Buku</title>
+  <!-- Memuat Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
   <style>
+    /* Menggunakan font Inter untuk tampilan yang lebih modern */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
     body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
-      background: #f4f4f4;
-      margin: 0;
-    }
-    h1 {
-      text-align: center;
-    }
-    form {
-      margin-bottom: 20px;
-      background: #fff;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    label {
-      display: block;
-      margin-top: 10px;
-    }
-    input, button {
-      width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      box-sizing: border-box;
-      font-size: 16px;
-    }
-    button {
-      margin-top: 15px;
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #45a049;
-    }
-    .table-wrapper {
-      overflow-x: auto;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      background: #fff;
-      margin-top: 10px;
-      font-size: 14px;
-    }
-    th, td {
-      border: 1px solid #ccc;
-      padding: 10px;
-      text-align: center;
-    }
-    th {
-      background-color: #e2e2e2;
-    }
-    .btn-hapus {
-      background-color: red;
-      color: white;
-      border: none;
-      padding: 5px 10px;
-      cursor: pointer;
-      border-radius: 5px;
-      font-size: 14px;
-    }
-    @media (max-width: 600px) {
-      body {
-        padding: 10px;
-      }
-      input, button {
-        font-size: 14px;
-      }
-      table {
-        font-size: 12px;
-      }
+      font-family: 'Inter', sans-serif;
     }
   </style>
 </head>
-<body>
-  <h1>Pencatatan Rakitan Buku</h1>
-  <form id="rakitanForm">
-    <label>Nama Pekerja:
-      <input type="text" id="nama" required />
-    </label>
-    <label>Tanggal:
-      <input type="date" id="tanggal" required />
-    </label>
-    <label>Jam Setor:
-      <input type="time" id="jam" required />
-    </label>
-    <label>Jumlah Rakitan:
-      <input type="number" id="jumlah" required />
-    </label>
-    <button type="submit">Simpan</button>
-  </form>
+<body class="bg-gray-100 text-gray-800">
 
-  <div class="table-wrapper">
-    <table>
-      <thead>
-        <tr>
-          <th>No</th>
-          <th>Nama</th>
-          <th>Tanggal</th>
-          <th>Jam</th>
-          <th>Jumlah Rakitan</th>
-          <th>Aksi</th>
-        </tr>
-      </thead>
-      <tbody id="tabelData"></tbody>
-    </table>
+  <div class="container mx-auto p-4 sm:p-6 lg:p-8 max-w-4xl">
+    <h1 class="text-2xl sm:text-3xl font-bold text-center mb-6 text-gray-700">Pencatatan Rakitan Buku</h1>
+
+    <!-- Form Input Data -->
+    <div class="bg-white p-6 rounded-xl shadow-md mb-8">
+      <form id="rakitanForm" class="space-y-4">
+        <div>
+          <label for="nama" class="block text-sm font-medium text-gray-600 mb-1">Nama Pekerja</label>
+          <input type="text" id="nama" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" required placeholder="Masukkan nama Anda" />
+        </div>
+
+        <!-- Tampilan Waktu Otomatis -->
+        <div class="bg-gray-50 p-3 rounded-lg border border-gray-200">
+            <p class="text-sm font-medium text-gray-600">Tanggal & Jam Setor (Otomatis)</p>
+            <p id="waktu-sekarang" class="text-lg font-semibold text-blue-600"></p>
+        </div>
+
+        <div>
+          <label for="jumlah" class="block text-sm font-medium text-gray-600 mb-1">Jumlah Rakitan</label>
+          <input type="number" id="jumlah" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" required placeholder="Contoh: 150" />
+        </div>
+
+        <button type="submit" class="w-full bg-blue-600 text-white font-bold py-2.5 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-transform transform hover:scale-105">
+          Simpan Data
+        </button>
+      </form>
+    </div>
+
+    <!-- Tabel Data Rakitan -->
+    <div class="bg-white rounded-xl shadow-md overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm text-left text-gray-600">
+          <thead class="text-xs text-gray-700 uppercase bg-gray-100">
+            <tr>
+              <th scope="col" class="px-6 py-3 text-center">No</th>
+              <th scope="col" class="px-6 py-3">Nama</th>
+              <th scope="col" class="px-6 py-3">Tanggal</th>
+              <th scope="col" class="px-6 py-3">Jam</th>
+              <th scope="col" class="px-6 py-3 text-center">Jumlah</th>
+              <th scope="col" class="px-6 py-3 text-center">Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="tabelData">
+            <!-- Data akan dimuat di sini oleh JavaScript -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Konfirmasi Hapus -->
+  <div id="confirmModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="bg-white p-6 rounded-lg shadow-xl max-w-sm mx-auto text-center">
+      <h3 class="text-lg font-semibold mb-4">Konfirmasi Hapus</h3>
+      <p class="mb-6">Apakah Anda yakin ingin menghapus data ini?</p>
+      <div class="flex justify-center gap-4">
+        <button id="confirmNo" class="px-6 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 transition">Tidak</button>
+        <button id="confirmYes" class="px-6 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 transition">Ya, Hapus</button>
+      </div>
+    </div>
   </div>
 
   <script>
-    let data = JSON.parse(localStorage.getItem("rakitanData")) || [];
+    // Mengambil elemen-elemen dari DOM
     const form = document.getElementById("rakitanForm");
     const tabelData = document.getElementById("tabelData");
+    const waktuDisplay = document.getElementById('waktu-sekarang');
+    const confirmModal = document.getElementById('confirmModal');
+    const confirmYesBtn = document.getElementById('confirmYes');
+    const confirmNoBtn = document.getElementById('confirmNo');
 
+    // Mengambil data dari localStorage atau menggunakan array kosong jika tidak ada
+    let data = JSON.parse(localStorage.getItem("rakitanData")) || [];
+    let indexToDelete = null;
+
+    // Fungsi untuk memformat angka agar selalu dua digit (misal: 7 -> 07)
+    const padTo2Digits = (num) => num.toString().padStart(2, '0');
+
+    // Fungsi untuk memperbarui tampilan waktu secara real-time
+    function updateWaktuSekarang() {
+        const now = new Date();
+        const tanggalLengkap = now.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+        const jam = `${padTo2Digits(now.getHours())}:${padTo2Digits(now.getMinutes())}:${padTo2Digits(now.getSeconds())}`;
+        waktuDisplay.textContent = `${tanggalLengkap} - ${jam}`;
+    }
+
+    // Event listener untuk form saat disubmit
     form.addEventListener("submit", function (e) {
       e.preventDefault();
 
       const nama = document.getElementById("nama").value;
-      const tanggal = document.getElementById("tanggal").value;
-      const jam = document.getElementById("jam").value;
       const jumlah = parseInt(document.getElementById("jumlah").value);
+      
+      const now = new Date();
+      // Menyimpan tanggal dalam format YYYY-MM-DD untuk konsistensi data
+      const tanggal = `${now.getFullYear()}-${padTo2Digits(now.getMonth() + 1)}-${padTo2Digits(now.getDate())}`;
+      // Menyimpan jam dalam format HH:MM
+      const jam = `${padTo2Digits(now.getHours())}:${padTo2Digits(now.getMinutes())}`;
 
+      // Menambahkan data baru ke array
       data.push({ nama, tanggal, jam, jumlah });
+      // Menyimpan data ke localStorage
       localStorage.setItem("rakitanData", JSON.stringify(data));
+      // Menampilkan ulang data di tabel
       tampilkanData();
+      // Mereset form input
       form.reset();
     });
 
+    // Fungsi untuk menampilkan semua data ke dalam tabel
     function tampilkanData() {
       tabelData.innerHTML = "";
+      if (data.length === 0) {
+        tabelData.innerHTML = `<tr><td colspan="6" class="text-center py-10 text-gray-500">Belum ada data yang disimpan.</td></tr>`;
+        return;
+      }
       data.forEach((item, index) => {
+        // Format tanggal agar lebih mudah dibaca (e.g., 18 Juni 2025)
+        const formattedTanggal = new Date(item.tanggal).toLocaleDateString('id-ID', {
+            day: 'numeric', month: 'long', year: 'numeric'
+        });
+
         const row = document.createElement("tr");
+        row.className = "bg-white border-b hover:bg-gray-50";
         row.innerHTML = `
-          <td>${index + 1}</td>
-          <td>${item.nama}</td>
-          <td>${item.tanggal}</td>
-          <td>${item.jam}</td>
-          <td>${item.jumlah}</td>
-          <td><button class="btn-hapus" onclick="hapusData(${index})">Hapus</button></td>
+          <td class="px-6 py-4 text-center font-medium">${index + 1}</td>
+          <td class="px-6 py-4 font-medium text-gray-900">${item.nama}</td>
+          <td class="px-6 py-4">${formattedTanggal}</td>
+          <td class="px-6 py-4">${item.jam}</td>
+          <td class="px-6 py-4 text-center font-bold">${item.jumlah}</td>
+          <td class="px-6 py-4 text-center">
+            <button class="font-medium text-red-600 hover:underline" onclick="bukaModalHapus(${index})">Hapus</button>
+          </td>
         `;
         tabelData.appendChild(row);
       });
     }
 
-    function hapusData(index) {
-      if (confirm("Yakin ingin menghapus data ini?")) {
-        data.splice(index, 1);
-        localStorage.setItem("rakitanData", JSON.stringify(data));
-        tampilkanData();
-      }
+    // Fungsi untuk membuka modal konfirmasi hapus
+    window.bukaModalHapus = function(index) {
+      indexToDelete = index;
+      confirmModal.classList.remove('hidden');
     }
 
+    // Fungsi untuk menutup modal
+    function tutupModal() {
+        indexToDelete = null;
+        confirmModal.classList.add('hidden');
+    }
+
+    // Event listener untuk tombol "Ya" di modal
+    confirmYesBtn.addEventListener('click', () => {
+        if (indexToDelete !== null) {
+            data.splice(indexToDelete, 1);
+            localStorage.setItem("rakitanData", JSON.stringify(data));
+            tampilkanData();
+        }
+        tutupModal();
+    });
+
+    // Event listener untuk tombol "Tidak" dan klik di luar modal
+    confirmNoBtn.addEventListener('click', tutupModal);
+    confirmModal.addEventListener('click', function(event) {
+        if (event.target === confirmModal) {
+            tutupModal();
+        }
+    });
+
+    // Memanggil fungsi-fungsi saat halaman pertama kali dimuat
+    updateWaktuSekarang();
+    setInterval(updateWaktuSekarang, 1000); // Update waktu setiap detik
     tampilkanData();
   </script>
 </body>
